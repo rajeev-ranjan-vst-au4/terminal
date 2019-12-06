@@ -21,7 +21,7 @@ Author(s):
 
 namespace Microsoft::Console::VirtualTerminal
 {
-    typedef void (*WriteInputEvents)(_Inout_ std::deque<std::unique_ptr<IInputEvent>>& events);
+    typedef std::function<void(std::deque<std::unique_ptr<IInputEvent>>&)> WriteInputEvents;
 
     class MouseInput sealed
     {

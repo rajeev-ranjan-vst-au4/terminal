@@ -170,6 +170,7 @@ private:
     COLORREF _defaultBg;
 
     bool _snapOnInput;
+    bool _vtMouseMode;
     bool _suppressApplicationTitle;
 
 #pragma region Text Selection

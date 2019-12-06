@@ -190,6 +190,11 @@ namespace winrt::TerminalApp::implementation
             _ToggleFullscreenHandlers(*this, *eventArgs);
             break;
         }
+        case ShortcutAction::ToggleVTMouseMode:
+        {
+            _ToggleVTMouseModeHandlers(*this, *eventArgs);
+            break;
+        }
         default:
             return false;
         }
