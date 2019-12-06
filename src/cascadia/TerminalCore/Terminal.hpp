@@ -87,6 +87,7 @@ public:
 #pragma region ITerminalInput
     // These methods are defined in Terminal.cpp
     bool SendKeyEvent(const WORD vkey, const WORD scanCode, const Microsoft::Terminal::Core::ControlKeyStates states) override;
+    bool SendMouseEvent(const COORD position, const unsigned int uiButton, const ControlKeyStates states, const short sWheelDelta);
     bool SendCharEvent(const wchar_t ch) override;
 
     [[nodiscard]] HRESULT UserResize(const COORD viewportSize) noexcept override;

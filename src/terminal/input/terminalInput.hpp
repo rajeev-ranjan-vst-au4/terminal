@@ -15,14 +15,17 @@ Author(s):
 
 #include <functional>
 #include "../../types/inc/IInputEvent.hpp"
+#include "../adapter/MouseInput.hpp"
 #pragma once
 
 namespace Microsoft::Console::VirtualTerminal
 {
+    typedef void (*WriteInputEvents)(_Inout_ std::deque<std::unique_ptr<IInputEvent>>& events);
+
     class TerminalInput final
     {
     public:
-        TerminalInput(_In_ std::function<void(std::deque<std::unique_ptr<IInputEvent>>&)> pfn);
+        TerminalInput(const WriteInputEvents pfn);
 
         TerminalInput() = delete;
         TerminalInput(const TerminalInput& old) = default;
@@ -38,8 +41,11 @@ namespace Microsoft::Console::VirtualTerminal
         void ChangeKeypadMode(const bool fApplicationMode);
         void ChangeCursorKeysMode(const bool fApplicationMode);
 
+        // TODO CARLOS: obviously a bad idea to just keep this public like this
+        MouseInput mouseInput;
+
     private:
-        std::function<void(std::deque<std::unique_ptr<IInputEvent>>&)> _pfnWriteEvents;
+        WriteInputEvents _pfnWriteEvents;
 
         // storage location for the leading surrogate of a utf-16 surrogate pair
         std::optional<wchar_t> _leadingSurrogate;

@@ -281,6 +281,45 @@ bool Terminal::SendKeyEvent(const WORD vkey, const WORD scanCode, const ControlK
     return translated && manuallyHandled;
 }
 
+// Method Description:
+// - Send this particular mouse event to the terminal. The terminal will translate
+//   the mouse button and the modifiers pressed into the appropriate VT sequence for that
+//   mouse event. If we do translate the event, we'll return true. In that case, the
+//   event should NOT be processed any further. If we return false, the event
+//   was NOT translated, and we should instead use the event to try and get the
+//   real character out of the event.
+// Arguments:
+// - vkey: The vkey of the key pressed.
+// - states: The Microsoft::Terminal::Core::ControlKeyStates representing the modifier key states.
+// Return Value:
+// - true if we translated the key event, and it should not be processed any further.
+// - false if we did not translate the key, and it should be processed into a character.
+bool Terminal::SendMouseEvent(const COORD position, const unsigned int uiButton, const ControlKeyStates states, const short sWheelDelta)
+{
+    /* MOUSE 
+        const COORD position,
+        const DWORD buttonState,
+        const DWORD activeModifierKeys,
+        const DWORD eventFlags
+
+       KEY
+        const bool keyDown,
+        const WORD repeatCount,
+        const WORD virtualKeyCode,
+        const WORD virtualScanCode,
+        const wchar_t charData,
+        const DWORD activeModifierKeys
+
+       MouseInput
+        const COORD coordMousePosition,
+        const unsigned int uiButton,
+        const short sModifierKeystate,
+        const short sWheelDelta
+        */
+
+    return _terminalInput->mouseInput.HandleMouse(position, uiButton, states.Value(), sWheelDelta);
+}
+
 bool Terminal::SendCharEvent(const wchar_t ch)
 {
     return _terminalInput->HandleChar(ch);
